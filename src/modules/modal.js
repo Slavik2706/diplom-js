@@ -4,7 +4,7 @@ const modal = () => {
    const body = document.querySelector('body')
    const modal = document.querySelector('.modal-callback')
    const modalOverlay = document.querySelector('.modal-overlay')
-   const buttons = document.querySelectorAll('.callback-btn')
+   const buttons = document.querySelectorAll('.callback-btn, .button-services')
 
    let opacity = 0
    buttons.forEach(btn => {
