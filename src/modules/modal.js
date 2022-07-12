@@ -5,7 +5,8 @@ const modal = () => {
    const modal = document.querySelector('.modal-callback')
    const modalOverlay = document.querySelector('.modal-overlay')
    const buttons = document.querySelectorAll('.callback-btn, .button-services')
-
+   const temp = document.querySelectorAll('.services-section .element')
+   console.log(temp);
    let opacity = 0
    buttons.forEach(btn => {
       btn.addEventListener('click', (event) => {
@@ -22,6 +23,27 @@ const modal = () => {
                modal.style.opacity = progress
             }
          })
+      })
+   })
+
+   temp.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+         console.log(e.offsetY);
+
+         if ((e.offsetX > 90 && e.offsetX < 290) && (e.offsetY > 98 && e.offsetY < 148)) {
+            modal.style.opacity = opacity;
+            modal.style.display = 'block'
+            modalOverlay.style.display = 'block'
+            animate({
+               duration: 1000,
+               timing(timeFraction) {
+                  return timeFraction;
+               },
+               draw(progress) {
+                  modal.style.opacity = progress
+               }
+            })
+         }
       })
    })
 
