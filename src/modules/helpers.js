@@ -20,3 +20,24 @@ const animate = ({ timing, draw, duration }) => {
 }
 
 export { animate }
+
+function checkPseudoClick(parentElem, event) {
+
+   const parentWidth = parseInt(window.getComputedStyle(parentElem).width, 10),
+      parentHeight = parseInt(window.getComputedStyle(parentElem).height, 10);
+
+   const before = window.getComputedStyle(parentElem, ':before');
+
+   const beforeXStart = (parentWidth / 2) - (parseInt(before.width, 10) / 2),
+      beforeXEnd = (parentWidth / 2) + (parseInt(before.width, 10) / 2);
+
+   const beforeYStart = (parentHeight / 2) - (parseInt(before.height, 10) / 2),
+      beforeYEnd = (parentHeight / 2) + (parseInt(before.height, 10) / 2);
+
+   const mouseX = event.offsetX,
+      mouseY = event.offsetY;
+
+   return (mouseX >= beforeXStart && mouseX <= beforeXEnd && mouseY >= beforeYStart && mouseY <= beforeYEnd ? true : false);
+}
+
+export { checkPseudoClick }

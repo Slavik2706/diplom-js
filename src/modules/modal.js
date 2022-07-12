@@ -1,13 +1,15 @@
 import { animate } from './helpers'
+import { checkPseudoClick } from './helpers'
 
 const modal = () => {
    const body = document.querySelector('body')
    const modal = document.querySelector('.modal-callback')
    const modalOverlay = document.querySelector('.modal-overlay')
    const buttons = document.querySelectorAll('.callback-btn, .button-services')
-   const temp = document.querySelectorAll('.services-section .element')
-   console.log(temp);
+   const element = document.querySelectorAll('.services-section .element')
+
    let opacity = 0
+
    buttons.forEach(btn => {
       btn.addEventListener('click', (event) => {
          event.preventDefault();
@@ -26,11 +28,10 @@ const modal = () => {
       })
    })
 
-   temp.forEach(btn => {
+   element.forEach(btn => {
       btn.addEventListener('click', (e) => {
-         console.log(e.offsetY);
-
-         if ((e.offsetX > 90 && e.offsetX < 290) && (e.offsetY > 98 && e.offsetY < 148)) {
+         const img = btn.querySelector('.img-wrapper')
+         if (checkPseudoClick(img, e)) {
             modal.style.opacity = opacity;
             modal.style.display = 'block'
             modalOverlay.style.display = 'block'
@@ -64,6 +65,6 @@ const modal = () => {
          }, 1000)
       }
    })
-}
 
+}
 export default modal
