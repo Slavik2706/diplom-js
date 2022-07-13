@@ -3,8 +3,6 @@ const validForm = () => {
    const nameInput = document.querySelector('form [placeholder="Ваше имя"]')
    const phoneInput = document.querySelector('form [placeholder="Телефон*"]')
 
-   phoneInput.setAttribute('pattern', ".{11,}")
-
    nameInput.addEventListener('input', (event) => {
       event.target.value = event.target.value.replace(/[^а-яА-Я\- ]/, "")
    })

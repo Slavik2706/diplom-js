@@ -1,89 +1,81 @@
 const sendForm = () => {
    const form = document.querySelector('#form-callback')
    const statusBlock = document.createElement('div')
-   const loadText = 'Загрузка...'
-   const errorText = 'Ошибка...'
-   const succesText = 'Спасибо! Наш менеджер с Вами свяжется!'
+   const phoneStatus = form.querySelector('p')
+   const loadText = 'Идет отправка...'
+   const errorText = 'Ошибка!'
+   const succesText = 'Отправлено!'
 
-   console.log(form);
+   const statusTel = document.createElement('div')
+
+
+   const validate = (list) => {
+      let success = true
+      list.forEach(input => {
+         if (input.getAttribute('name') === 'tel') {
+            if (!/.{11,}/.test(input.value)) {
+               success = false
+            }
+         }
+      })
+      return success
+   }
+
+   const delayMessage = (ms) => {
+      return new Promise(
+         resolve => setTimeout(resolve, ms)
+      )
+   }
+
+   const sendData = (data) => {
+      return fetch('./server.php', {
+         method: 'POST',
+         body: JSON.stringify(data),
+         headers: {
+            "Content-Type": "application/json; charset=UTF-8"
+         }
+      }).then(res => res.json())
+   }
+
    form.addEventListener('submit', (event) => {
       event.preventDefault()
 
+      const formElements = form.querySelectorAll('input')
+      const formData = new FormData(form)
+      const formBody = {}
 
+
+      formData.forEach((val, key) => {
+         formBody[key] = val
+      })
+
+      if (validate(formElements)) {
+         statusBlock.textContent = loadText
+         form.append(statusBlock)
+
+         sendData(formBody)
+            .then(data => {
+               statusBlock.textContent = succesText
+
+               formElements.forEach(input => {
+                  if (input.value !== 'Отправить') {
+                     input.value = ''
+                  }
+               })
+            })
+            .catch(error => {
+               statusBlock.textContent = errorText
+            })
+         delayMessage(3000).then(() => {
+            statusBlock.remove()
+         })
+         statusTel.textContent = ""
+      } else {
+         statusTel.style.color = "red"
+         statusTel.textContent = "*Короткий номер телефона"
+         phoneStatus.prepend(statusTel)
+      }
    })
-
-   // const sendData = (data) => {
-   //    return fetch('https://jsonplaceholder.typicode.com/posts', {
-   //       method: 'POST',
-   //       body: JSON.stringify(data),
-   //       headers: {
-   //          "Content-Type": "multipart/form-data"
-   //       }
-   //    }).then(res => res.json())
-   // }
-
-   // const delayMessage = (ms) => {
-   //    return new Promise(
-   //       resolve => setTimeout(resolve, ms)
-   //    )
-   // }
-
-   // const submitForm = () => {
-   //    const formElements = form.querySelectorAll('input')
-   //    const formData = new FormData(form)
-   //    const formBody = {}
-
-   //    statusBlock.textContent = loadText
-   //    statusBlock.style.color = '#FFFFFF'
-
-   //    form.append(statusBlock)
-
-   //    formData.forEach((val, key) => {
-   //       formBody[key] = val
-   //    })
-
-   //    someElem.forEach(elem => {
-   //       const element = document.getElementById(elem.id)
-
-   //       if (elem.type === 'block') {
-   //          formBody[elem.id] = element.textContent
-   //       } else if (elem.type === 'input') {
-   //          formBody[elem.id] = element.value
-   //       }
-   //    })
-
-   //    if (validate(formElements)) {
-   //       sendData(formBody)
-   //          .then(data => {
-   //             statusBlock.textContent = succesText
-
-   //             formElements.forEach(input => {
-   //                input.value = ''
-   //             })
-   //          })
-   //          .catch(error => {
-   //             statusBlock.textContent = errorText
-   //          })
-   //       delayMessage(3000).then(() => {
-   //          statusBlock.remove()
-   //       })
-   //    } else {
-   //       alert('Данные не валидны!!!')
-   //    }
-   // }
-
-   // try {
-   //    if (!form) {
-   //       throw new Error('Верните форму на место, пожалуйста))')
-   //    }
-   //    form.addEventListener('submit', (event) => {
-   //       event.preventDefault()
-
-   //       submitForm()
-   //    })
-   // } catch (error) {
-   //    console.log(error.message);
-   // }
 }
 
 export default sendForm
