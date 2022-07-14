@@ -11,15 +11,15 @@ const scrollToBlock = () => {
 
       if (e.target.matches('.item-services')) {
          let servicesTop = services.getBoundingClientRect().top
-         window.scroll(0, servicesTop + scrolledTo)
+         window.scrollTo({ top: servicesTop + scrolledTo, left: 0, behavior: 'smooth' })
       }
       if (e.target.matches('.item-faq')) {
          let questionsTop = questions.getBoundingClientRect().top
-         window.scroll(0, questionsTop + scrolledTo)
+         window.scrollTo({ top: questionsTop + scrolledTo, left: 0, behavior: 'smooth' })
       }
       if (e.target.matches('.item-contacts')) {
          let contactsTop = contacts.getBoundingClientRect().top
-         window.scroll(0, contactsTop + scrolledTo)
+         window.scrollTo({ top: contactsTop + scrolledTo, left: 0, behavior: 'smooth' })
       }
    })
 
